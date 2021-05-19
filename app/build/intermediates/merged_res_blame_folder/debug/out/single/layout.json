@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/unnamed/Documents/OSS_2021/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_login.xml",
+        "source": "/Users/unnamed/Documents/OSS_2021/app/src/main/res/layout/activity_login.xml"
+    },
+    {
+        "merged": "/Users/unnamed/Documents/OSS_2021/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_start.xml",
+        "source": "/Users/unnamed/Documents/OSS_2021/app/src/main/res/layout/activity_start.xml"
+    },
+    {
+        "merged": "/Users/unnamed/Documents/OSS_2021/app/build/intermediates/incremental/mergeDebugResources/stripped.dir/layout/activity_authentication.xml",
+        "source": "/Users/unnamed/Documents/OSS_2021/app/src/main/res/layout/activity_authentication.xml"
+    }
+]
