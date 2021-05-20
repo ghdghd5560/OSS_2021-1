@@ -48,9 +48,10 @@
             <TextView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginRight="20dp"
-                android:text="@string/golbang2" />
+                android:text="@string/golbang2"
+                android:textColor=""/>
 
             <Spinner
                 android:id="@+id/spinner2"
@@ -65,14 +66,14 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
         <Button
-            android:id="@+id/SignInBtn"
+            android:id="@+id/nextPage2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
             android:layout_marginBottom="35dp"
-            android:text="@string/signInBtn"
+            android:text="@string/contiune"
             android:textSize="30dp" />
     </LinearLayout>
 </RelativeLayout>

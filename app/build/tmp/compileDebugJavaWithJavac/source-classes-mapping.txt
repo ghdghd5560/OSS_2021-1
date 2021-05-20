@@ -1,8 +1,10 @@
-com/example/oss_2021/databinding/ActivityStartBinding.java
- com.example.oss_2021.databinding.ActivityStartBinding
-com/example/oss_2021/databinding/ActivityLoginBinding.java
- com.example.oss_2021.databinding.ActivityLoginBinding
-com/example/oss_2021/BuildConfig.java
- com.example.oss_2021.BuildConfig
-com/example/oss_2021/databinding/ActivityAuthenticationBinding.java
- com.example.oss_2021.databinding.ActivityAuthenticationBinding
+com/example/startactivity/LoginActivity.java
+ com.example.startactivity.LoginActivity
+ com.example.startactivity.LoginActivity$1
+com/example/startactivity/StartActivity.java
+ com.example.startactivity.StartActivity
+ com.example.startactivity.StartActivity$1
+com/example/startactivity/BuildConfig.java
+ com.example.startactivity.BuildConfig
+com/example/startactivity/AuthenticationActivity.java
+ com.example.startactivity.AuthenticationActivity

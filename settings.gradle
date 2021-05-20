@@ -1,2 +1,2 @@
-rootProject.name = "OSS_2021"
+rootProject.name = "StartActivity"
 include ':app'

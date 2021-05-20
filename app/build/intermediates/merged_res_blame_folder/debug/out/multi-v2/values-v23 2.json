@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/unnamed/Documents/OSS_2021/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v23/values-v23.xml",
+            "outputFile": "/Users/unnamed/Documents/Github/OSS_2021/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v23/values-v23.xml",
             "map": [
                 {
                     "source": "/Users/unnamed/.gradle/caches/transforms-2/files-2.1/c24949a4d0d17ce79ca10f533d267c96/cardview-1.0.0/res/values-v23/values-v23.xml",

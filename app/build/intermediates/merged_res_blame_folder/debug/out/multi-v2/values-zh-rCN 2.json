@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/unnamed/Documents/OSS_2021/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zh-rCN/values-zh-rCN.xml",
+            "outputFile": "/Users/unnamed/Documents/Github/OSS_2021/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-zh-rCN/values-zh-rCN.xml",
             "map": [
                 {
                     "source": "/Users/unnamed/.gradle/caches/transforms-2/files-2.1/967826c52c5558ea22060f7728ba7d3b/core-1.5.0/res/values-zh-rCN/values-zh-rCN.xml",
