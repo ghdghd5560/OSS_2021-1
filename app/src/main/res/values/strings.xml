@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">OSS_2021</string>
+    <string name="email">email</string>
+    <string name="golbang2">@</string>
+    <string name="contiune">계속하기</string>
+    <string name="myEmail"> 내 학교 이메일: </string>
+    <string name="authenticationCode"> 인증번호 : </string>
+    <string name="authenticationBtn"> 인증 </string>
+</resources>
