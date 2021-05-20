@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.example.oss_2021",
+  "applicationId": "com.example.startactivity",
   "variantName": "debug",
   "elements": [
     {
