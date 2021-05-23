@@ -4,8 +4,8 @@
     "type": "PROCESSED_RES",
     "kind": "Directory"
   },
-  "applicationId": "com.example.oss_2021",
-  "variantName": "debug",
+  "applicationId": "com.example.mainactivity",
+  "variantName": "processDebugResources",
   "elements": [
     {
       "type": "SINGLE",
