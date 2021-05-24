@@ -1,42 +1,33 @@
 {
   "project_info": {
-    "project_number": "917684778791",
-    "firebase_url": "https://oss-2021-default-rtdb.firebaseio.com",
-    "project_id": "oss-2021",
-    "storage_bucket": "oss-2021.appspot.com"
+    "project_number": "361795642927",
+    "project_id": "oss2021-84ff5",
+    "storage_bucket": "oss2021-84ff5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:917684778791:android:92a3eef07e6c4125d05b02",
+        "mobilesdk_app_id": "1:361795642927:android:0c302e2bd5e1cd4a9bc8da",
         "android_client_info": {
           "package_name": "project.oss_2021"
         }
       },
       "oauth_client": [
         {
-          "client_id": "917684778791-utgnuf9mr40h212tsvc0cuqonvhg7qh1.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "project.oss_2021",
-            "certificate_hash": "2d6aebba8001fee272893327cd81c9e729195175"
-          }
-        },
-        {
-          "client_id": "917684778791-bp3v62ibsqp4lh0smqs3gb5o455k4k78.apps.googleusercontent.com",
+          "client_id": "361795642927-jrrccf89irbee88ld492bj8efjkftgob.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDl2GDzW1eotsjNFx_GF37c93ZqJzJlwu0"
+          "current_key": "AIzaSyB4nhhym-C69m7RrcaCgvf3LCOmYJQhSZk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "917684778791-bp3v62ibsqp4lh0smqs3gb5o455k4k78.apps.googleusercontent.com",
+              "client_id": "361795642927-jrrccf89irbee88ld492bj8efjkftgob.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

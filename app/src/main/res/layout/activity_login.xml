@@ -73,7 +73,6 @@
             android:layout_marginRight="40dp"
             android:layout_marginBottom="35dp"
             android:text="@string/contiune"
-            android:textSize="30sp"
-            android:onClick="btnAddData"/>
+            android:textSize="30sp"/>
     </LinearLayout>
 </RelativeLayout>
