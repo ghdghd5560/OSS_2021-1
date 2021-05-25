@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -14,56 +15,62 @@
             android:layout_gravity="center_horizontal">
 
             <Button
-                android:id="@+id/LoginBackBtn"
+                android:id="@+id/AuthenBackBtn"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="20dp"
-                android:foreground="@mipmap/back"
-                android:background="@mipmap/back"/>
+                android:background="@mipmap/back"
+                android:foreground="@mipmap/back" />
         </FrameLayout>
 
         <TextView
             android:layout_width="285dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="30dp"
             android:layout_marginBottom="25dp"
-            android:text="@string/myEmail"
+            android:text="@string/my_Univ_Email"
             android:textSize="30sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:weightSum="1">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
 
             <EditText
-                android:id="@+id/Email_Id"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="15dp" />
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:hint="@string/email"/>
 
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp"
-                android:text="@string/golbang2"/>
-            <Spinner
-                android:id="@+id/Email_spinner"
-                android:layout_width="120dp"
-                android:layout_height="40dp"
-                android:layout_marginRight="40dp"/>
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:hint="@string/password"/>
         </LinearLayout>
-    </LinearLayout>
+
+        </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:windowSoftInputMode="adjustResize">
         <Button
             android:id="@+id/nextPage2"
             android:layout_width="match_parent"
@@ -72,7 +79,8 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginBottom="35dp"
-            android:text="@string/contiune"
-            android:textSize="30sp"/>
+            android:text="@string/authenticationBtn"
+            android:textSize="25sp"
+            />
     </LinearLayout>
 </RelativeLayout>

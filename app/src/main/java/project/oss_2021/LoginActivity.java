@@ -1,63 +1,88 @@
 package project.oss_2021;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import org.jetbrains.annotations.NotNull;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private Button nextBtn, addBtn;
-    private Spinner Email_Spinner;
-    private EditText Email_Id;
-    DatabaseReference dbref;
-            
+    private Button mLogin;
+    private EditText mEmail, mPassword;
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        
-        Email_Id = (EditText) findViewById(R.id.Email_Id);
-        Email_Spinner = (Spinner) findViewById(R.id.Email_spinner);
-        addBtn = (Button) findViewById(R.id.nextPage2);
-        dbref = FirebaseDatabase.getInstance().getReference("Email");
-            addBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    insertdata();
+
+        mAuth = FirebaseAuth.getInstance();
+        firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                final FirebaseUser user = mAuth.getCurrentUser();
+                if(user != null) { //회원가입이 성공하면
+                    Intent intent = new Intent(LoginActivity.this, AuthenticationActivity.class); // RegistrationActivity에서 MainActivity를 호출
+                    startActivity(intent);
+                    finish(); //액티비티 종료
+                    return;
                 }
-            });
-        
+            }
+        };
 
+        mLogin = findViewById(R.id.login);
 
-//        nextBtn = (Button) findViewById(R.id.nextPage2);
-//        nextBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(LoginActivity.this, AuthenticationActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-    }
+        mEmail = findViewById(R.id.email);
+        mPassword = findViewById(R.id.password);
 
-    private void insertdata() {
-        String data = Email_Id.getText().toString().trim();
-        dbref.push().setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onComplete(@NonNull @NotNull Task<Void> task) {
-                Email_Id.setText("");
-                Toast.makeText(LoginActivity.this, "Data Inserted", Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                final String email = mEmail.getText().toString();
+                final String password = mPassword.getText().toString();
+                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                            if(user.isEmailVerified()){
+                                startActivity(new Intent(LoginActivity.this, AuthenticationActivity.class));
+                            }
+                            else{
+                                user.sendEmailVerification();
+                                Toast.makeText(LoginActivity.this, "Check your email to verify your account", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+                            Toast.makeText(LoginActivity.this, "Fail", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(firebaseAuthStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAuth.removeAuthStateListener(firebaseAuthStateListener);
     }
 }

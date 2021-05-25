@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "233866403863",
+    "firebase_url": "https://oss-2021-f42ce-default-rtdb.firebaseio.com",
+    "project_id": "oss-2021-f42ce",
+    "storage_bucket": "oss-2021-f42ce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:233866403863:android:55dd95b9230ed8f57bbc52",
+        "android_client_info": {
+          "package_name": "project.oss_2021"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "233866403863-ubgg84jds77qtfon0pabe55fr6f0u6oe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbDWrnUD1iTlY6otdDBjPHGma98YyzFCI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "233866403863-ubgg84jds77qtfon0pabe55fr6f0u6oe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
