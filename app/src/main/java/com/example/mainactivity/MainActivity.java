@@ -15,6 +15,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
@@ -50,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         checkUserSex();
 
 
-
         rowItems = new ArrayList<cards>(); // 카드 배열들
 
         arrayAdapter = new arrayAdapter(this, R.layout.item, rowItems ); //카드마다 al의 텍스트를 출력, item은 텍스트뷰, 색깔
@@ -74,16 +74,21 @@ public class MainActivity extends AppCompatActivity {
             //카드를 왼쪽으로 넘길 때
             @Override
             public void onLeftCardExit(Object dataObject) {
-                //Do something on the left!
-                //You also have access to the original object.
-                //If you want to use it just cast it (String) dataObject
-                Toast.makeText(MainActivity.this, "Left!", Toast.LENGTH_SHORT).show();
+                cards object = (cards) dataObject;
+                String userId = object.getUserId();
+                userDb.child(userSexOpp).child(userId).child("connection").child("nope").child(currentUId).setValue(true); //왼쪽으로 넘기면 connection 노드 -> nope 노드의 값을 true
+
+                Toast.makeText(MainActivity.this, "Nope!", Toast.LENGTH_SHORT).show();
             }
 
             //카드를 오른쪽으로 넘길 때
             @Override
             public void onRightCardExit(Object dataObject) {
-                Toast.makeText(MainActivity.this, "Right!", Toast.LENGTH_SHORT).show();
+                cards object = (cards) dataObject;
+                String userId = object.getUserId();
+                userDb.child(userSexOpp).child(userId).child("connection").child("like").child(currentUId).setValue(true); //오른쪽으로 넘기면 connection 노드 -> like 노드 -> 현재 유저의 노드 값을 true
+                isConnectionMatch(userId);
+                Toast.makeText(MainActivity.this, "Like!", Toast.LENGTH_SHORT).show();
             }
 
 
@@ -94,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onScroll(float scrollProgressPercent) {
-
             }
         });
 
@@ -107,6 +111,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    //매칭 함수
+    private void isConnectionMatch(String userId) {
+        DatabaseReference currentUserConnectionsDb = userDb.child(userSex).child(currentUId).child("connection").child("like").child(userId); // 나에게 like를 보낸 유저
+        currentUserConnectionsDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Toast.makeText(MainActivity.this, "new Connection" , Toast.LENGTH_SHORT).show();
+                    userDb.child(userSexOpp).child(snapshot.getKey()).child("connection").child("matches").child(currentUId).setValue(true);  //"나"의 matches 노드에 "나에게 like를 보낸 유저"의 노드 값을 true
+                    userDb.child(userSex).child(currentUId).child("connection").child("matches").child(snapshot.getKey()).setValue(true);  //"나에게 like를 보낸 유저"의 matches 노드에 "나"의 노드 값을 true
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private String userSex; // 사용자의 성별
     private String userSexOpp; // 사용자의 반대 성별
     public void checkUserSex() {
@@ -138,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //femaleDb의 이벤트리스너
-        DatabaseReference femaleDb = FirebaseDatabase.getInstance().getReference().child("Users").child("FeMale");
+        DatabaseReference femaleDb = FirebaseDatabase.getInstance().getReference().child("Users").child("Female");
         femaleDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -169,7 +194,8 @@ public class MainActivity extends AppCompatActivity {
         oppositeSexDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-               if(snapshot.exists()) {
+                // nope 또는 like의 유저 값이 true가 아니면 카드 배열에 추가
+               if(snapshot.exists() && !snapshot.child("connection").child("nope").hasChild(currentUId) && !snapshot.child("connection").child("like").hasChild(currentUId)) {
                    cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString()); //반대 성별의 name을 카드 배열에 추가한다
                    rowItems.add(item);
                    arrayAdapter.notifyDataSetChanged();
