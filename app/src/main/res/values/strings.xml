@@ -5,5 +5,6 @@
     <string name="my_Univ_Email"> 내 학교 이메일: </string>
     <string name="authenticationBtn"> 인증 메일 보내기 </string>
     <string name="password"> password </string>
-
+    <string name="confirm"> confirm </string>
+    <string name="back"> back </string>
 </resources>

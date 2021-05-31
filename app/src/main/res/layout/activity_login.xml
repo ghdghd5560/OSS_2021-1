@@ -20,7 +20,6 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="20dp"
-                android:background="@mipmap/back"
                 android:foreground="@mipmap/back" />
         </FrameLayout>
 
@@ -72,7 +71,7 @@
         android:orientation="vertical"
         android:windowSoftInputMode="adjustResize">
         <Button
-            android:id="@+id/nextPage2"
+            android:id="@+id/sendAuthEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"

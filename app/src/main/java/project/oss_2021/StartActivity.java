@@ -16,16 +16,14 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        /*nextBtn = (Button) findViewById(R.id.nextPage1);
+        nextBtn = (Button) findViewById(R.id.loginBtn);
 
         nextBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StartActivity.this, LoginActivity.class);
                 startActivity(intent);
-                finish();
-                return;
             }
-        });*/
+        });
     }
 }
