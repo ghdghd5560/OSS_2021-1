@@ -1,4 +1,4 @@
-package project.oss_2021;
+package com.example.mainactivity;
 
 import org.junit.Test;
 
