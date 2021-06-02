@@ -23,7 +23,19 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/loginBtn"
+            android:id="@+id/RegisterBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/login_btn"
+            android:backgroundTint="@color/white"
+            android:text="@string/Registration"
+            android:textSize="30dp" />
+
+        <Button
+            android:id="@+id/LoginBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
@@ -35,5 +47,4 @@
             android:text="@string/Login"
             android:textSize="30dp" />
     </LinearLayout>
-
 </RelativeLayout>

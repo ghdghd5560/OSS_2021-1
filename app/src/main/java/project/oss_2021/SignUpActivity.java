@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,87 +18,86 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.annotations.NotNull;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button Previous, sendAuthBtn;
+    private Button mRegister, Previous;
     private EditText mEmail, mPassword;
-    private ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signup);
 
         mAuth = FirebaseAuth.getInstance();
-        mEmail = (EditText) findViewById(R.id.email);
-        mPassword = (EditText) findViewById(R.id.password);
-        progressBar = (ProgressBar) findViewById(R.id.progressbar);
 
-        sendAuthBtn = (Button) findViewById(R.id.sendAuthEmail);
-        sendAuthBtn.setOnClickListener(LoginActivity.this);
+        mEmail = findViewById(R.id.email);
+        mPassword = findViewById(R.id.password);
+
+        mRegister = (Button) findViewById(R.id.sendAuthEmail);
+        mRegister.setOnClickListener(SignUpActivity.this);
         Previous = (Button) findViewById(R.id.Previous);
-        Previous.setOnClickListener(LoginActivity.this);
+        Previous.setOnClickListener(SignUpActivity.this);
     }
 
     @Override
     public void onClick(View v){
-        progressBar.setVisibility(View.INVISIBLE);
-
         switch(v.getId()){
             case R.id.Previous:
-                startActivity(new Intent(LoginActivity.this, StartActivity.class));
+                startActivity(new Intent(SignUpActivity.this, RegistrationActivity.class));
                 break;
 
             case R.id.sendAuthEmail:
-                userLogin();
+                userCreate();
                 break;
         }
     }
 
-    private void userLogin(){
+
+    private void userCreate() {
         final String email = mEmail.getText().toString().trim();
         final String password = mPassword.getText().toString().trim();
 
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             mEmail.setError("Email is empty");
             mEmail.requestFocus();
             return;
         }
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             mEmail.setError("Please enter a valid email");
             mEmail.requestFocus();
             return;
         }
 
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             mPassword.setError("password is empty");
             mPassword.requestFocus();
             return;
         }
 
-        if(password.length() < 6){
+        if (password.length() < 6) {
             mPassword.setError("Min password length is 6 character");
             mPassword.requestFocus();
         }
 
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                    if(user.isEmailVerified()){
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    }else{
+                    if (user.isEmailVerified()) {
+                        startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                    } else {
                         user.sendEmailVerification();
-                        Toast.makeText(LoginActivity.this, "Check your email to verify", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUpActivity.this, "Check your email to verify", Toast.LENGTH_SHORT).show();
                     }
 
-                }else{
-                    Toast.makeText(LoginActivity.this, "Failed to login! Please Check your credentials", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(SignUpActivity.this, "qwer", Toast.LENGTH_SHORT).show();
                 }
             }
         });
