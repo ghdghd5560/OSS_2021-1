@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">MainActivity</string>
+    <string name="app_name">OSS_2021</string>
+    <string name="email">email</string>
+    <string name="Login">로그인</string>
+    <string name="Registration">회원가입</string>
+    <string name="Login_Text"> 로그인: </string>
+    <string name="Register_Text"> 회원가입: </string>
+    <string name="authenticationBtn"> 인증 메일 보내기 </string>
+    <string name="password"> password </string>
+    <string name="confirm"> confirm </string>
+    <string name="back"> back </string>
 </resources>

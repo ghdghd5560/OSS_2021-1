@@ -28,7 +28,7 @@
             android:layout_height="50dp"
             android:layout_marginLeft="30dp"
             android:layout_marginBottom="25dp"
-            android:text="@string/Login_Text"
+            android:text="@string/Register_Text"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -58,7 +58,7 @@
                 android:singleLine="true"
                 android:hint="@string/password"/>
         </LinearLayout>
-        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
