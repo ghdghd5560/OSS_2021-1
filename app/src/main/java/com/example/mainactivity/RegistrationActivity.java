@@ -1,11 +1,10 @@
-package project.oss_2021;
+package com.example.mainactivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -21,18 +20,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class RegistrationActivity extends AppCompatActivity {
 
     private Button mRegister;
-    private EditText mPhone, mName, mIntroduction;
-    private ImageView mProfileImage;
+    private EditText mEmail, mPassword, mName;
 
     private RadioGroup mRadioGroup;
-
-    private DatabaseReference userDb;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
@@ -41,8 +34,6 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-
-        userDb = FirebaseDatabase.getInstance().getReference().child("Users");
 
         mAuth = FirebaseAuth.getInstance();
         firebaseAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -59,10 +50,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
         mRegister = findViewById(R.id.register);
 
-        mPhone = findViewById(R.id.phone);
+        mEmail = findViewById(R.id.email);
+        mPassword = findViewById(R.id.password);
         mName = findViewById(R.id.name);
-        mIntroduction = findViewById(R.id.intro);
-        mProfileImage = findViewById(R.id.profileImage);
 
         mRadioGroup = findViewById(R.id.radioGroup);
 
@@ -75,26 +65,23 @@ public class RegistrationActivity extends AppCompatActivity {
                 return;
             } // 성별을 정하지 않을 경우 이 리스너는 여기서 종료
 
+            final String email = mEmail.getText().toString();
+            final String password = mPassword.getText().toString();
             final String name = mName.getText().toString();
-            final String phone = mPhone.getText().toString();
-            final String intro = mIntroduction.getText().toString();
-
-            //일단 보류
-            //String userId = mAuth.getCurrentUser().getUid();
-
-
-            //userDb.child(radioButton.getText().toString()).child(userId).child("Info").child("Name").child(name);
-            //userDb.child(radioButton.getText().toString()).child(userId).child("Info").child("Phone").child(phone);
-            //userDb.child(radioButton.getText().toString()).child(userId).child("Info").child("Introduction").child(intro);
-
-            //유저 정보
-            Map userInfo = new HashMap<>();
-            userInfo.put("name", name);
-            userInfo.put("phone", phone);
-            userInfo.put("introduction", intro);
-            userInfo.put("profileImageUrl", "default");
-            userDb.updateChildren(userInfo);
-
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (!task.isSuccessful()) {
+                        Toast.makeText(RegistrationActivity.this, "sign up error", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        String userId = mAuth.getCurrentUser().getUid(); //파이어베이스 Authentication의 User ID를 가져옴
+                        DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(radioButton.getText().toString()).child(userId).child("name");
+                                                                //DB의 Users 노드 -> 라디오버튼에 해당하는 성별 노드(Female, Male) -> (사용자의 ID에 기반한 노드 생성) ->name 노드
+                        currentUserDb.setValue(name); // 사용자가 입력한 이름을 DB의 name노드에 저장함
+                    }
+                }
+            });
         });
     }
 
