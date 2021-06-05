@@ -34,7 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private EditText mNameField, mPhoneField;
 
-    private Button mBack, mConfirm;
+    private Button mPrevious, mConfirm;
 
     private ImageView mProfileImage;
 
@@ -55,7 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         mProfileImage = findViewById(R.id.profileImage);
 
-        mBack = findViewById(R.id.Previous);
+        mPrevious = findViewById(R.id.Previous);
         mConfirm = findViewById(R.id.confirm);
 
         mAuth = FirebaseAuth.getInstance();
@@ -79,7 +79,7 @@ public class SettingsActivity extends AppCompatActivity {
                 saveUserInformation();
             }
         });
-        mBack.setOnClickListener(new View.OnClickListener() {
+        mPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

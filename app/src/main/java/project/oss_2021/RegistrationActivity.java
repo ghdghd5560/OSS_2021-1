@@ -37,7 +37,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText mNameField, mPhoneField;
     private RadioGroup mRadioGroup;
 
-    private Button mBack, mConfirm;
+    private Button mPrevious, mConfirm;
 
     private ImageView mProfileImage;
 
@@ -58,7 +58,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         mProfileImage = findViewById(R.id.profileImage);
 
-        mBack = findViewById(R.id.Previous);
+        mPrevious = findViewById(R.id.Previous);
         mConfirm = findViewById(R.id.confirm);
 
         mRadioGroup = findViewById(R.id.radioGroup);
@@ -84,7 +84,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 saveUserInformation();
             }
         });
-        mBack.setOnClickListener(new View.OnClickListener() {
+        mPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
