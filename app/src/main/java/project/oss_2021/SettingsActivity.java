@@ -55,7 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         mProfileImage = findViewById(R.id.profileImage);
 
-        mBack = findViewById(R.id.back);
+        mBack = findViewById(R.id.Previous);
         mConfirm = findViewById(R.id.confirm);
 
         mAuth = FirebaseAuth.getInstance();

@@ -55,14 +55,6 @@
             android:hint="Phone"
             android:inputType="phone" />
 
-        <EditText
-            android:id="@+id/intro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:hint="Introduction" />
-
     </LinearLayout>
     <LinearLayout
         android:id="@+id/ChooserSex"
@@ -75,7 +67,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/radioGroup"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="30dp">
 
             <RadioButton
                 android:layout_width="wrap_content"

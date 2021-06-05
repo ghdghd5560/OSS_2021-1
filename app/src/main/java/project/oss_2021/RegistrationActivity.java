@@ -55,8 +55,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
         mProfileImage = findViewById(R.id.profileImage);
 
-        mBack = findViewById(R.id.back);
-        mConfirm = findViewById(R.id.confirm);
+        mBack = findViewById(R.id.Previous);
+        mConfirm = findViewById(R.id.register);
 
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getCurrentUser().getUid();

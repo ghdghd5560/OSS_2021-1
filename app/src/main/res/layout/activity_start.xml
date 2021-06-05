@@ -5,16 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="project.oss_2021.StartActivity"
-    android:background="@drawable/grad">
+    tools:context="project.oss_2021.StartActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="어플이름"
         android:gravity="center"
         android:layout_above="@id/signInLayout"
-        android:layout_marginBottom="250dp" />
+        android:layout_marginBottom="250dp"
+        android:text="어플이름"
+        android:textSize="50sp" />
 
     <LinearLayout
         android:id="@+id/signInLayout"
@@ -30,10 +30,11 @@
             android:layout_marginLeft="40dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="40dp"
-            android:background="@drawable/login_btn"
-            android:backgroundTint="@color/white"
             android:text="@string/Registration"
             android:textSize="30dp" />
+<!--            android:background="@drawable/login_btn"-->
+<!--            android:backgroundTint="@color/white"-->
+
 
         <Button
             android:id="@+id/LoginBtn"
@@ -43,9 +44,10 @@
             android:layout_marginTop="15dp"
             android:layout_marginRight="40dp"
             android:layout_marginBottom="35dp"
-            android:background="@drawable/login_btn"
-            android:backgroundTint="@color/white"
             android:text="@string/Login"
             android:textSize="30dp" />
+<!--            android:background="@drawable/login_btn"-->
+<!--            android:backgroundTint="@color/white"-->
+
     </LinearLayout>
 </RelativeLayout>
