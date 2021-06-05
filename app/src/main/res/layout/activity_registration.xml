@@ -5,15 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="project.oss_2021.RegistrationActivity"
+    tools:context="project.oss_2021.SettingsActivity"
     android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/ChooserSex"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_above="@+id/RegisterBtn">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
 
         <ImageView
             android:id="@+id/profileImage"
-            android:layout_width="344dp"
+            android:layout_width="350dp"
             android:layout_height="406dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
@@ -55,21 +55,13 @@
             android:hint="Phone"
             android:inputType="phone" />
 
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/ChooserSex"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/Botton"
-        android:orientation="vertical">
         <RadioGroup
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/radioGroup"
             android:orientation="horizontal"
-            android:layout_marginBottom="30dp">
-
+            android:layout_marginBottom="20dp"
+            android:gravity="center">
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,8 +73,9 @@
         </RadioGroup>
     </LinearLayout>
 
+
     <LinearLayout
-        android:id="@+id/Botton"
+        android:id="@+id/RegisterBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -92,7 +85,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:id="@+id/register"
-            android:text="register"/>
+            android:layout_marginBottom="30dp"
+            android:id="@+id/confirm"
+            android:text="Register"/>
     </LinearLayout>
 </RelativeLayout>

@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,6 +35,7 @@ import java.util.Map;
 public class RegistrationActivity extends AppCompatActivity {
 
     private EditText mNameField, mPhoneField;
+    private RadioGroup mRadioGroup;
 
     private Button mBack, mConfirm;
 
@@ -48,7 +51,7 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_registration);
 
         mNameField = findViewById(R.id.name);
         mPhoneField = findViewById(R.id.phone);
@@ -56,7 +59,9 @@ public class RegistrationActivity extends AppCompatActivity {
         mProfileImage = findViewById(R.id.profileImage);
 
         mBack = findViewById(R.id.Previous);
-        mConfirm = findViewById(R.id.register);
+        mConfirm = findViewById(R.id.confirm);
+
+        mRadioGroup = findViewById(R.id.radioGroup);
 
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getCurrentUser().getUid();
@@ -129,9 +134,18 @@ public class RegistrationActivity extends AppCompatActivity {
         name = mNameField.getText().toString();
         phone = mPhoneField.getText().toString();
 
+        int selectId = mRadioGroup.getCheckedRadioButtonId();
+
+        final RadioButton radioButton = (RadioButton) findViewById(selectId);
+
+        if(radioButton.getText() == null){
+            return;
+        }
+
         Map userInfo = new HashMap();
         userInfo.put("name", name);
         userInfo.put("phone", phone);
+        userInfo.put("sex", radioButton.getText().toString());
         mUserDatabase.updateChildren(userInfo);
 
         if(resultUri != null){
