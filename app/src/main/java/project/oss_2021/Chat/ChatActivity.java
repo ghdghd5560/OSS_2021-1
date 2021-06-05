@@ -69,15 +69,6 @@ public class ChatActivity extends AppCompatActivity {
                 sendMessage();
             }
         });
-
-        mPrevious = findViewById(R.id.Previous);
-        mPrevious.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                return;
-            }
-        });
     }
 
     private void sendMessage() {

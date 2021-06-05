@@ -7,11 +7,11 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import Choice.ChoiceActivity;
 import project.oss_2021.Cards.arrayAdapter;
 import project.oss_2021.Cards.cards;
 import project.oss_2021.Matches.MatchesActivity;
-import project.oss_2021.Matches.MatchesActivity;
+import project.oss_2021.Choice.ChoiceActivity;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
