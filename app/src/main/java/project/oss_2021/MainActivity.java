@@ -7,10 +7,11 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import Choice.ChoiceActivity;
 import project.oss_2021.Cards.arrayAdapter;
 import project.oss_2021.Cards.cards;
 import project.oss_2021.Matches.MatchesActivity;
-//import project.oss_2021.Matches.MatchesActivity;
+import project.oss_2021.Matches.MatchesActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private String currentUId;
     private DatabaseReference usersDb;
 
-    private Button mSignout, mSetting, mMatches;
+    private Button mSignout, mSetting, mChoice, mMatches;
 
     ListView listView;
     List<cards> rowItems;
@@ -50,8 +51,11 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUId = mAuth.getCurrentUser().getUid();
 
+        checkUserSex();
+
         mSignout = findViewById(R.id.signout);
         mSetting = findViewById(R.id.setting);
+        mChoice = findViewById(R.id.choice);
         mMatches = findViewById(R.id.matches);
 
 
@@ -68,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
 
             return;
         });
+        mChoice.setOnClickListener(view->{
+            Intent intent = new Intent(MainActivity.this, ChoiceActivity.class);
+            startActivity(intent);
+
+            return;
+        });
         mMatches.setOnClickListener(view->{
             Intent intent = new Intent(MainActivity.this, MatchesActivity.class);
             startActivity(intent);
@@ -76,11 +86,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
         rowItems = new ArrayList<cards>(); // 카드 배열들
         arrayAdapter = new arrayAdapter(this, R.layout.item, rowItems ); //카드마다 al의 텍스트를 출력, item은 텍스트뷰, 색깔
         //al.add("java") <- 실행은 되지만 이것만 쓰면 앱 상에선 출력이 되질않음
         //arrayAdapter.notifyDataSetChanged(); <- 변경되었다는 것을 써야함
-        SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
+        SwipeFlingAdapterView flingContainer = findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             // 카드를 없앰
@@ -133,8 +144,14 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     Toast.makeText(MainActivity.this, "new Connection", Toast.LENGTH_SHORT).show();
-                    usersDb.child(snapshot.getKey()).child("connection").child("matches").child(currentUId).setValue(true);  //"나"의 matches 노드에 "나에게 like를 보낸 유저"의 노드 값을 true
-                    usersDb.child(currentUId).child("connection").child("matches").child(snapshot.getKey()).setValue(true);  //"나에게 like를 보낸 유저"의 matches 노드에 "나"의 노드 값을 true
+
+                    String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
+
+                    usersDb.child(snapshot.getKey()).child("connection").child("matches").child(currentUId).child("ChatId").setValue(key); //"나"의 matches 노드 -> "나에게 like를 보낸 유저"의 노드 -> ChatId 추가
+                    usersDb.child(currentUId).child("connection").child("matches").child(snapshot.getKey()).child("ChatId").setValue(key); //"나"에게 like를 보낸 유저"의 matches 노드 -> "나"의 노드 -> ChatId 추가
+
+                    // usersDb.child(snapshot.getKey()).child("connection").child("matches").child(currentUId).setValue(true);  //"나"의 matches 노드에 "나에게 like를 보낸 유저"의 노드 값을 true
+                    // usersDb.child(currentUId).child("connection").child("matches").child(snapshot.getKey()).setValue(true);  //"나에게 like를 보낸 유저"의 matches 노드에 "나"의 노드 값을 true
                 }
 
             }
@@ -159,8 +176,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.getKey().equals(user.getUid())) {
-                    userSex = "Male";
-                    userSexOpp = "Female";
                     if (snapshot.exists()){
                         if (snapshot.child("sex").getValue() != null){
                             userSex = snapshot.child("sex").getValue().toString();
@@ -186,52 +201,28 @@ public class MainActivity extends AppCompatActivity {
 
     //반대 성별의 유저함수
     public void getOppositeSexUsers() {
-         usersDb.addChildEventListener(new ChildEventListener() {
-             @Override
-             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                 // nope 또는 like의 유저 값이 true가 아니면 카드 배열에 추가
-                 if(snapshot.exists() && !snapshot.child("connection").child("nope").hasChild(currentUId) && !snapshot.child("connection").child("like").hasChild(currentUId) && snapshot.child("sex").getValue().toString().equals(userSexOpp)) {
-                     cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString()); //반대 성별의 name을 카드 배열에 추가한다
-                     rowItems.add(item);
-                     arrayAdapter.notifyDataSetChanged();
-                 }
-             }
-             @Override
-             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-             }
-             @Override
-             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-             }
-             @Override
-             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-             }
-             @Override
-             public void onCancelled(@NonNull DatabaseError error) {
-             }
-         });
+        usersDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                // nope 또는 like의 유저 값이 true가 아니면 카드 배열에 추가
+                if(snapshot.exists() && !snapshot.child("connection").child("nope").hasChild(currentUId) && !snapshot.child("connection").child("like").hasChild(currentUId) && snapshot.child("sex").getValue().toString().equals(userSexOpp)) {
+                    cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString()); //반대 성별의 name을 카드 배열에 추가한다
+                    rowItems.add(item);
+                    arrayAdapter.notifyDataSetChanged();
+                }
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
-
-
- /*
-     public void logoutUser(View view) {
-         mAuth.signOut();
-         Intent intent = new Intent(MainActivity.this, ChooseLoginRegistrationActivity.class); // MainActivity -> ChooseLoginRegistrationActivity
-        startActivity(intent);
-        finish();
-        return;
-    }
-
-     public void goToSettings(View view) {
-         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-
-         startActivity(intent);
-
-         return;
-     }
-
-     public void goToMatches(View view) {
-         Intent intent = new Intent(MainActivity.this, MatchesActivity.class);
-         startActivity(intent);
-         return;
-     } */
-    }
+}

@@ -29,6 +29,4 @@
             android:id="@+id/Matchid"/>
 
     </LinearLayout>
-
-
 </LinearLayout>
