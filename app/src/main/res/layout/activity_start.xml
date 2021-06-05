@@ -8,12 +8,13 @@
     tools:context="project.oss_2021.StartActivity"
     android:background="@drawable/grad">
 
-    <ImageView
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="어플이름"
+        android:gravity="center"
         android:layout_above="@id/signInLayout"
-        android:layout_marginBottom="250dp"
-        android:src="@mipmap/icon3" />
+        android:layout_marginBottom="250dp" />
 
     <LinearLayout
         android:id="@+id/signInLayout"

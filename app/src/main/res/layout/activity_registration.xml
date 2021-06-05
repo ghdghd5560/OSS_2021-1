@@ -5,14 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingActivity"
+    tools:context="project.oss_2021.RegistrationActivity"
     android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/qwer"
+        android:layout_above="@+id/ChooserSex"
         android:orientation="vertical">
 
         <FrameLayout
@@ -32,23 +32,26 @@
 
         <ImageView
             android:id="@+id/profileImage"
-            android:layout_width="match_parent"
-            android:layout_height="358dp"
+            android:layout_width="344dp"
+            android:layout_height="406dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginBottom="20dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/ic_launcher_foreground" />
 
         <EditText
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:hint="Name" />
 
         <EditText
             android:id="@+id/phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:hint="Phone"
             android:inputType="phone" />
 
@@ -56,26 +59,28 @@
             android:id="@+id/intro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:hint="Introduction" />
 
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/ChooserSex"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/qwer"
+        android:layout_above="@+id/Botton"
         android:orientation="vertical">
         <RadioGroup
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/radioGroup"
-            android:orientation="horizontal"
-            android:layout_marginBottom="20dp">
+            android:orientation="horizontal">
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Male" />
-
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,7 +89,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/qwer"
+        android:id="@+id/Botton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -92,6 +97,8 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:id="@+id/register"
             android:text="register"/>
     </LinearLayout>

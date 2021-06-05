@@ -58,6 +58,17 @@
                 android:singleLine="true"
                 android:hint="@string/password"/>
         </LinearLayout>
+
+        <Button
+            android:id="@+id/sendAuthEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="35dp"
+            android:text="@string/authenticationBtn"
+            android:textSize="25sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -65,22 +76,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
+
         <Button
-            android:id="@+id/sendAuthEmail"
+            android:id="@+id/nextPage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:layout_marginLeft="40dp"
+            android:layout_marginTop="15dp"
             android:layout_marginRight="40dp"
             android:layout_marginBottom="35dp"
-            android:text="@string/authenticationBtn"
-            android:textSize="25sp"
-            />
+            android:text="다음"
+            android:textSize="25sp"/>
     </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progressbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
 </RelativeLayout>

@@ -20,7 +20,7 @@ import com.google.firebase.database.annotations.NotNull;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button mRegister, Previous;
+    private Button mRegister, Previous, nextPage;
     private EditText mEmail, mPassword;
 
     private FirebaseAuth mAuth;
@@ -40,21 +40,54 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         mRegister.setOnClickListener(SignUpActivity.this);
         Previous = (Button) findViewById(R.id.Previous);
         Previous.setOnClickListener(SignUpActivity.this);
+        nextPage = (Button) findViewById(R.id.nextPage);
+        nextPage.setOnClickListener(SignUpActivity.this);
     }
 
     @Override
     public void onClick(View v){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         switch(v.getId()){
             case R.id.Previous:
-                startActivity(new Intent(SignUpActivity.this, RegistrationActivity.class));
+                startActivity(new Intent(SignUpActivity.this, StartActivity.class));
                 break;
 
             case R.id.sendAuthEmail:
                 userCreate();
                 break;
+
+            case R.id.nextPage:
+                nextPage();
+                break;
         }
     }
 
+
+    private void nextPage(){
+        final String email = mEmail.getText().toString().trim();
+        final String password = mPassword.getText().toString().trim();
+
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                    if(user.isEmailVerified()){
+                        startActivity(new Intent(SignUpActivity.this, RegistrationActivity.class));
+                        finish();
+                    }else{
+                        user.sendEmailVerification();
+                        Toast.makeText(SignUpActivity.this, "Check your email to verify", Toast.LENGTH_SHORT).show();
+                    }
+
+                }else{
+                    Toast.makeText(SignUpActivity.this, "Failed to login! Please Check your credentials", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
 
     private void userCreate() {
         final String email = mEmail.getText().toString().trim();
@@ -90,14 +123,17 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                     if (user.isEmailVerified()) {
-                        startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                        startActivity(new Intent(SignUpActivity.this, RegistrationActivity.class));
                     } else {
                         user.sendEmailVerification();
                         Toast.makeText(SignUpActivity.this, "Check your email to verify", Toast.LENGTH_SHORT).show();
+                        if (user.isEmailVerified()) {
+                            startActivity(new Intent(SignUpActivity.this, RegistrationActivity.class));
+                        }
                     }
 
-                } else {
-                    Toast.makeText(SignUpActivity.this, "qwer", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(SignUpActivity.this, "Login has already been taken ", Toast.LENGTH_SHORT).show();
                 }
             }
         });

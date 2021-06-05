@@ -1,10 +1,11 @@
-package project.oss_2021;
+package project.oss_2021.Matches;
 
-public class Cards {
+public class MatchesObject {
     private String userId;
     private String name;
     private String profileImageUrl;
-    public Cards (String userId, String name, String profileImageUrl) {
+
+    public MatchesObject (String userId, String name, String profileImageUrl) {
         this.userId = userId;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
@@ -24,10 +25,8 @@ public class Cards {
         this.name = name;
     }
 
-    public String getprofileImageUrl() {
-        return name;
+    public String getProfileImageUrl() {
+        return profileImageUrl;
     }
-    public void setprofileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
+    public void setProfileImageUrl(String profileImageUrl) { this.profileImageUrl = profileImageUrl; }
 }

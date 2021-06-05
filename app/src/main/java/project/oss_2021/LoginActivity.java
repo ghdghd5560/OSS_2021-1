@@ -20,7 +20,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private Button Previous, sendAuthBtn;
     private EditText mEmail, mPassword;
-    private ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
 
@@ -32,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAuth = FirebaseAuth.getInstance();
         mEmail = (EditText) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
-        progressBar = (ProgressBar) findViewById(R.id.progressbar);
+        //progressBar = (ProgressBar) findViewById(R.id.progressbar);
 
         sendAuthBtn = (Button) findViewById(R.id.sendAuthEmail);
         sendAuthBtn.setOnClickListener(LoginActivity.this);
@@ -42,8 +41,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v){
-        progressBar.setVisibility(View.INVISIBLE);
-
         switch(v.getId()){
             case R.id.Previous:
                 startActivity(new Intent(LoginActivity.this, StartActivity.class));
@@ -90,6 +87,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     if(user.isEmailVerified()){
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
                     }else{
                         user.sendEmailVerification();
                         Toast.makeText(LoginActivity.this, "Check your email to verify", Toast.LENGTH_SHORT).show();
