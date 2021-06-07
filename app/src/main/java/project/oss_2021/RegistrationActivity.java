@@ -139,7 +139,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Map userInfo = new HashMap();
         userInfo.put("name", name);
         userInfo.put("phone", phone);
-        userInfo.put("university", phone);
+        userInfo.put("university", university);
         userInfo.put("sex", radioButton.getText().toString());
         userInfo.put("profileImageUrl", "default");
         mUserDatabase.updateChildren(userInfo);

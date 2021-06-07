@@ -126,7 +126,7 @@ public class SettingsActivity extends AppCompatActivity {
         Map userInfo = new HashMap();
         userInfo.put("name", name);
         userInfo.put("phone", phone);
-        userInfo.put("university", phone);
+        userInfo.put("university", university);
         mUserDatabase.updateChildren(userInfo);
 
         if(resultUri != null){
