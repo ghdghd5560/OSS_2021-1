@@ -1,6 +1,8 @@
 package project.oss_2021.Choice;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,7 @@ import java.util.List;
 import project.oss_2021.R;
 
 public class ChoiceActivity extends AppCompatActivity {
+    private Button mPrevious;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mChoiceAdapter;
     private RecyclerView.LayoutManager mChoiceLayoutManager;
@@ -41,10 +44,19 @@ public class ChoiceActivity extends AppCompatActivity {
 
         getUserLikeId();
 
+
+        mPrevious = findViewById(R.id.Previous);
+        mPrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                return;
+            }
+        });
     }
 
     private void getUserLikeId() {
-        DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId).child("connection").child("like");
+        DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId).child("connection").child("choice");
         matchDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

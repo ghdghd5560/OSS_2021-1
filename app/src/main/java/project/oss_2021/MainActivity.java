@@ -182,6 +182,8 @@ public class MainActivity extends AppCompatActivity {
                 if (snapshot.exists()) {
                     Toast.makeText(MainActivity.this, "new Connection", Toast.LENGTH_SHORT).show();
                     String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
+                    usersDb.child(snapshot.getKey()).child("connection").child("choice").child(currentUId).setValue(null);
+                    usersDb.child(currentUId).child("connection").child("choice").child(snapshot.getKey()).setValue(null);
                     usersDb.child(snapshot.getKey()).child("connection").child("matches").child(currentUId).child("ChatId").setValue(key); //"나"의 matches 노드 -> "나에게 like를 보낸 유저"의 노드 -> ChatId 추가
                     usersDb.child(currentUId).child("connection").child("matches").child(snapshot.getKey()).child("ChatId").setValue(key); //"나"에게 like를 보낸 유저"의 matches 노드 -> "나"의 노드 -> ChatId 추가
                     // usersDb.child(snapshot.getKey()).child("connection").child("matches").child(currentUId).setValue(true);  //"나"의 matches 노드에 "나에게 like를 보낸 유저"의 노드 값을 true

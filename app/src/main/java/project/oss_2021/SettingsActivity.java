@@ -99,8 +99,8 @@ public class SettingsActivity extends AppCompatActivity {
                         mPhoneField.setText(phone);
                     }
                     if(map.get("university")!=null){
-                        phone = map.get("university").toString();
-                        mPhoneField.setText(university);
+                        university = map.get("university").toString();
+                        mUniField.setText(university);
                     }
                     if(map.get("sex")!=null){
                         userSex = map.get("sex").toString();
