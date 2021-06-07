@@ -53,8 +53,8 @@ public class FilteringActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mUserDatabase;
 
-    private String userId, hobby1, hobby2, hobby3, purpose, university, userSex, distance;
-    //private int distance;
+    private String userId, hobby1, hobby2, hobby3, purpose, university, userSex;
+    private int distance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +90,7 @@ public class FilteringActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // onProgressChange - Seekbar 값 변경될때마다 호출
 
-                distance = String.valueOf(seekBar.getProgress());
+                distance = seekBar.getProgress();
                 mDistance.setText(distance + "km");
             }
             @Override
@@ -156,9 +156,9 @@ public class FilteringActivity extends AppCompatActivity {
                             sP.setChecked(true);
                     }
                     if(map.get("distance")!=null){
-                        distance = map.get("distance").toString();
+                        distance = Integer.parseInt(map.get("distance").toString());
                         mDistance.setText(distance + "km");
-                        seekBar.setProgress(Integer.parseInt(distance));
+                        seekBar.setProgress(distance);
                     }
 
                 }

@@ -214,33 +214,35 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.getKey().equals(user.getUid())) {
                     if (snapshot.exists()) {
-
-                        if(snapshot.child("hobby1")!=null){
-                            hobby1 = snapshot.child("hobby1").toString();
-
-                        }
-                        if(snapshot.child("hobby2")!=null){
-                            hobby2 = snapshot.child("hobby2").toString();
+                        Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
+                        if(map.get("hobby1")!=null){
+                            hobby1 = map.get("hobby1").toString();
 
                         }
-                        if(snapshot.child("hobby3")!=null){
-                            hobby3 = snapshot.child("hobby3").toString();
+                        if(map.get("hobby2")!=null){
+                            hobby2 = map.get("hobby2").toString();
 
                         }
-                        if(snapshot.child("hobbyCheck")!=null){
-                            hobbyCheck = Boolean.parseBoolean(snapshot.child("hobbyCheck").toString());
+                        if(map.get("hobby3")!=null){
+                            hobby3 = map.get("hobby3").toString();
 
                         }
-                        if(snapshot.child("purposeCheck")!=null){
-                            purposeCheck = Boolean.parseBoolean(snapshot.child("purposeCheck").toString());
+                        if(map.get("hobbyCheck")!=null){
+                            hobbyCheck = Boolean.parseBoolean(map.get("hobbyCheck").toString());
 
                         }
-                        if(snapshot.child("purpose")!=null){
-                            purpose = snapshot.child("purpose").toString();
+                        if(map.get("purposeCheck")!=null){
+                            purposeCheck = Boolean.parseBoolean(map.get("purposeCheck").toString());
 
                         }
-                        if(snapshot.child("distance")!=null){
-                            distance = Integer.parseInt(snapshot.child("distance").toString());
+                        if(map.get("purpose")!=null){
+                            purpose = map.get("purpose").toString();
+
+                        }
+                        if(map.get("distance")!=null){
+                            String dis = map.get("distance").toString();
+                            System.out.println(dis);
+                            distance = Integer.parseInt(dis);
                         }
 
 
