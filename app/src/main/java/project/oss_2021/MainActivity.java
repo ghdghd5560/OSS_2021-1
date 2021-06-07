@@ -327,22 +327,9 @@ public class MainActivity extends AppCompatActivity {
 
 
                                 }
-
-                                 else{
-                                    if(purposeCheck){
-                                        if(purpose.equals(snapshot.child("purpose").getValue().toString())){
-                                            String profileImageUrl = "default";
-                                            if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
-                                                profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
-                                            }
-                                            cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), profileImageUrl);
-                                            rowItems.add(item);
-                                            arrayAdapter.notifyDataSetChanged();
-                                        }
-
-
-                                    }
-                                    else{
+                            }else{
+                                if(purposeCheck){
+                                    if(purpose.equals(snapshot.child("purpose").getValue().toString())){
                                         String profileImageUrl = "default";
                                         if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
                                             profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
@@ -351,6 +338,17 @@ public class MainActivity extends AppCompatActivity {
                                         rowItems.add(item);
                                         arrayAdapter.notifyDataSetChanged();
                                     }
+
+
+                                }
+                                else{
+                                    String profileImageUrl = "default";
+                                    if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
+                                        profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
+                                    }
+                                    cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), profileImageUrl);
+                                    rowItems.add(item);
+                                    arrayAdapter.notifyDataSetChanged();
                                 }
                             }
                         }
