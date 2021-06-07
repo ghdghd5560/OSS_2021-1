@@ -35,7 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private EditText mNameField, mPhoneField, mUniField;
 
-    private Button mPrevious, mConfirm;
+    private Button mPrevious, mConfirm, mFilter;
 
     private ImageView mProfileImage;
     private FirebaseAuth mAuth;
@@ -58,6 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         mPrevious = findViewById(R.id.Previous);
         mConfirm = findViewById(R.id.confirm);
+        mFilter = findViewById(R.id.filter);
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getCurrentUser().getUid();
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
@@ -68,6 +69,13 @@ public class SettingsActivity extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 startActivityForResult(intent, 1);
+            }
+        });
+        mFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingsActivity.this, FilteringActivity.class); // SettingsActivity -> FilteringActivity
+                startActivity(intent);
             }
         });
         mConfirm.setOnClickListener(new View.OnClickListener() {

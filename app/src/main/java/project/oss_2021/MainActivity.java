@@ -31,6 +31,7 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -49,7 +50,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
     private cards cards_data[];
     private project.oss_2021.Cards.arrayAdapter arrayAdapter;
-    private int i;
+    private int distance;
     private FirebaseAuth mAuth;
     private String currentUId;
     private DatabaseReference usersDb;
@@ -199,6 +200,8 @@ public class MainActivity extends AppCompatActivity {
 
     private String userSex; // 사용자의 성별
     private String userSexOpp; // 사용자의 반대 성별
+    private String hobby1, hobby2, hobby3, purpose;
+    private boolean hobbyCheck, purposeCheck;
 
 
     public void checkUserInfo() {
@@ -211,6 +214,36 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.getKey().equals(user.getUid())) {
                     if (snapshot.exists()) {
+
+                        if(snapshot.child("hobby1")!=null){
+                            hobby1 = snapshot.child("hobby1").toString();
+
+                        }
+                        if(snapshot.child("hobby2")!=null){
+                            hobby2 = snapshot.child("hobby2").toString();
+
+                        }
+                        if(snapshot.child("hobby3")!=null){
+                            hobby3 = snapshot.child("hobby3").toString();
+
+                        }
+                        if(snapshot.child("hobbyCheck")!=null){
+                            hobbyCheck = Boolean.parseBoolean(snapshot.child("hobbyCheck").toString());
+
+                        }
+                        if(snapshot.child("purposeCheck")!=null){
+                            purposeCheck = Boolean.parseBoolean(snapshot.child("purposeCheck").toString());
+
+                        }
+                        if(snapshot.child("purpose")!=null){
+                            purpose = snapshot.child("purpose").toString();
+
+                        }
+                        if(snapshot.child("distance")!=null){
+                            distance = Integer.parseInt(snapshot.child("distance").toString());
+                        }
+
+
                         if (snapshot.child("sex").getValue() != null) {
                             userSex = snapshot.child("sex").getValue().toString();
                             switch (userSex) {
@@ -240,12 +273,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public boolean checkDistance(String t1, String t2) {
+    public boolean checkDistance(String t1, String t2, int distance) {
         long latitudeOpp = Long.parseLong(t1);
         long longitudeOpp = Long.parseLong(t2);
 
 
-        if (Math.sqrt(Math.pow((latitudeOpp - latitude), 2) + Math.pow((longitudeOpp - longitude), 2)) < 5) {
+        if (Math.sqrt(Math.pow((latitudeOpp - latitude), 2) + Math.pow((longitudeOpp - longitude), 2)) < distance) {
             return true;
         } else {
             return false;
@@ -261,18 +294,66 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 //여기가 필터링
                 if (snapshot.child("sex").getValue() != null) {
-                    if (snapshot.exists() && !snapshot.child("connection").child("nope").hasChild(currentUId) && !snapshot.child("connection").child("like").hasChild(currentUId) && snapshot.child("sex").getValue().toString().equals(userSexOpp) && snapshot.child("university").getValue().toString().equals(university) && checkDistance(snapshot.child("latitude").getValue().toString(), snapshot.child("longitude").getValue().toString())) {
-                        String profileImageUrl = "default";
-                        if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
-                            profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
+                    if (snapshot.exists() && !snapshot.child("connection").child("nope").hasChild(currentUId) && !snapshot.child("connection").child("like").hasChild(currentUId) && snapshot.child("sex").getValue().toString().equals(userSexOpp) && snapshot.child("university").getValue().toString().equals(university)) {
+                        if (checkDistance(snapshot.child("latitude").getValue().toString(), snapshot.child("longitude").getValue().toString(), distance)) {   //거리 필터링
+                            if(hobbyCheck){
+                                String [] hobbys = {hobby1, hobby2, hobby3};
+                                if(Arrays.asList(hobbys).contains(snapshot.child("hobby1").getValue().toString()) || Arrays.asList(hobbys).contains(snapshot.child("hobby2").getValue().toString()) || Arrays.asList(hobbys).contains(snapshot.child("hobby3").getValue().toString())){
+                                    if(purposeCheck){
+                                        if(purpose.equals(snapshot.child("purpose").getValue().toString())){
+                                            String profileImageUrl = "default";
+                                            if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
+                                                profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
+                                            }
+                                            cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), profileImageUrl);
+                                            rowItems.add(item);
+                                            arrayAdapter.notifyDataSetChanged();
+                                        }
+
+
+                                    }
+                                    else{
+                                        String profileImageUrl = "default";
+                                        if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
+                                            profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
+                                        }
+                                        cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), profileImageUrl);
+                                        rowItems.add(item);
+                                        arrayAdapter.notifyDataSetChanged();
+                                    }
+
+
+
+                                }
+
+                                 else{
+                                    if(purposeCheck){
+                                        if(purpose.equals(snapshot.child("purpose").getValue().toString())){
+                                            String profileImageUrl = "default";
+                                            if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
+                                                profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
+                                            }
+                                            cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), profileImageUrl);
+                                            rowItems.add(item);
+                                            arrayAdapter.notifyDataSetChanged();
+                                        }
+
+
+                                    }
+                                    else{
+                                        String profileImageUrl = "default";
+                                        if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
+                                            profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
+                                        }
+                                        cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), profileImageUrl);
+                                        rowItems.add(item);
+                                        arrayAdapter.notifyDataSetChanged();
+                                    }
+                                }
+                            }
                         }
-                        cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), profileImageUrl);
-                        rowItems.add(item);
-                        arrayAdapter.notifyDataSetChanged();
                     }
                 }
-
-
             }
 
             @Override
