@@ -54,6 +54,15 @@
             android:layout_marginRight="30dp"
             android:hint="Phone"
             android:inputType="phone" />
+        <EditText
+            android:id="@+id/university"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:hint="University"
+            android:inputType="text" />
+
 
     </LinearLayout>
     <LinearLayout

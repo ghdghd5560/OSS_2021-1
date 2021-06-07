@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private EditText mNameField, mPhoneField;
+    private EditText mNameField, mPhoneField, mUniField;
 
     private Button mPrevious, mConfirm;
 
@@ -41,7 +41,7 @@ public class SettingsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mUserDatabase;
 
-    private String userId, name, phone, profileImageUrl, userSex;
+    private String userId, name, phone, profileImageUrl,university, userSex;
 
     private Uri resultUri;
 
@@ -52,6 +52,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         mNameField = findViewById(R.id.name);
         mPhoneField = findViewById(R.id.phone);
+        mUniField = findViewById(R.id.university);
 
         mProfileImage = findViewById(R.id.profileImage);
 
@@ -103,6 +104,10 @@ public class SettingsActivity extends AppCompatActivity {
                         phone = map.get("phone").toString();
                         mPhoneField.setText(phone);
                     }
+                    if(map.get("university")!=null){
+                        phone = map.get("university").toString();
+                        mPhoneField.setText(university);
+                    }
                     if(map.get("sex")!=null){
                         userSex = map.get("sex").toString();
                     }
@@ -128,10 +133,12 @@ public class SettingsActivity extends AppCompatActivity {
     private void saveUserInformation() {
         name = mNameField.getText().toString();
         phone = mPhoneField.getText().toString();
+        university = mUniField.getText().toString();
 
         Map userInfo = new HashMap();
         userInfo.put("name", name);
         userInfo.put("phone", phone);
+        userInfo.put("university", phone);
         mUserDatabase.updateChildren(userInfo);
 
         if(resultUri != null){
