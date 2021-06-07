@@ -204,7 +204,6 @@ public class MainActivity extends AppCompatActivity {
     public void checkUserInfo() {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-
         // userDb의 이벤트리스너
         DatabaseReference userDb = usersDb.child(user.getUid());
         userDb.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -262,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 //여기가 필터링
                 if (snapshot.child("sex").getValue() != null) {
-                    if (snapshot.exists() && !snapshot.child("connection").child("nope").hasChild(currentUId) && !snapshot.child("connection").child("like").hasChild(currentUId) && snapshot.child("sex").getValue().toString().equals(userSexOpp)) {
+                    if (snapshot.exists() && !snapshot.child("connection").child("nope").hasChild(currentUId) && !snapshot.child("connection").child("like").hasChild(currentUId) && snapshot.child("sex").getValue().toString().equals(userSexOpp) && snapshot.child("university").getValue().toString().equals(university) && checkDistance(snapshot.child("latitude").getValue().toString(), snapshot.child("longitude").getValue().toString())) {
                         String profileImageUrl = "default";
                         if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
                             profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
@@ -272,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
                         arrayAdapter.notifyDataSetChanged();
                     }
                 }
+
 
             }
 
