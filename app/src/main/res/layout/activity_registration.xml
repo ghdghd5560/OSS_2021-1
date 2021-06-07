@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="project.oss_2021.SettingsActivity"
+    tools:context="project.oss_2021.RegistrationActivity"
     android:orientation="vertical">
 
 
@@ -33,7 +33,7 @@
         <ImageView
             android:id="@+id/profileImage"
             android:layout_width="350dp"
-            android:layout_height="406dp"
+            android:layout_height="350dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:src="@drawable/ic_launcher_foreground" />
@@ -54,6 +54,14 @@
             android:layout_marginRight="30dp"
             android:hint="Phone"
             android:inputType="phone" />
+        <EditText
+            android:id="@+id/university"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:hint="University"
+            android:inputType="text" />
 
         <RadioGroup
             android:layout_width="match_parent"

@@ -36,7 +36,7 @@ public class SettingsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mUserDatabase;
 
-    private String userId, name, phone, profileImageUrl,university, userSex;
+    private String userId, name, phone, profileImageUrl, university, userSex;
 
     private Uri resultUri;
 

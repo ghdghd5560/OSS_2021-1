@@ -1,11 +1,9 @@
 package project.oss_2021;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -26,7 +24,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -34,17 +31,16 @@ import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    private EditText mNameField, mPhoneField;
-    private RadioGroup mRadioGroup;
+    private EditText mNameField, mPhoneField, mUniField;
 
     private Button mPrevious, mConfirm;
+    private RadioGroup mRadioGroup;
 
     private ImageView mProfileImage;
-
     private FirebaseAuth mAuth;
     private DatabaseReference mUserDatabase;
 
-    private String userId, name, phone, profileImageUrl, userSex;
+    private String userId, name, phone, profileImageUrl,university, userSex;
 
     private Uri resultUri;
 
@@ -55,21 +51,17 @@ public class RegistrationActivity extends AppCompatActivity {
 
         mNameField = findViewById(R.id.name);
         mPhoneField = findViewById(R.id.phone);
+        mUniField = findViewById(R.id.university);
+        mRadioGroup = findViewById(R.id.radioGroup);
 
         mProfileImage = findViewById(R.id.profileImage);
 
         mPrevious = findViewById(R.id.Previous);
         mConfirm = findViewById(R.id.confirm);
-
-        mRadioGroup = findViewById(R.id.radioGroup);
-
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getCurrentUser().getUid();
-
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
-
         getUserInfo();
-
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,8 +84,6 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
     }
-
-
     private void getUserInfo() {
         mUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -107,6 +97,10 @@ public class RegistrationActivity extends AppCompatActivity {
                     if(map.get("phone")!=null){
                         phone = map.get("phone").toString();
                         mPhoneField.setText(phone);
+                    }
+                    if(map.get("university")!=null){
+                        phone = map.get("university").toString();
+                        mPhoneField.setText(university);
                     }
                     if(map.get("sex")!=null){
                         userSex = map.get("sex").toString();
@@ -129,11 +123,7 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) { }
         });
     }
-
     private void saveUserInformation() {
-        name = mNameField.getText().toString();
-        phone = mPhoneField.getText().toString();
-
         int selectId = mRadioGroup.getCheckedRadioButtonId();
 
         final RadioButton radioButton = (RadioButton) findViewById(selectId);
@@ -142,23 +132,26 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
 
+        name = mNameField.getText().toString();
+        phone = mPhoneField.getText().toString();
+        university = mUniField.getText().toString();
+
         Map userInfo = new HashMap();
         userInfo.put("name", name);
         userInfo.put("phone", phone);
-        userInfo.put("profileImageUrl", "default");
+        userInfo.put("university", phone);
         userInfo.put("sex", radioButton.getText().toString());
+        userInfo.put("profileImageUrl", "default");
         mUserDatabase.updateChildren(userInfo);
 
         if(resultUri != null){
             StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(userId);
             Bitmap bitmap = null;
-
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), resultUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
             byte[] data = baos.toByteArray();
@@ -167,22 +160,30 @@ public class RegistrationActivity extends AppCompatActivity {
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
+                    // StorageReference filePath = taskSnapshot.getStorage();
+                    // filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    //    @Override
+                    //    public void onSuccess(Uri uri) {
                     String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-
                     Map userInfo = new HashMap();
                     userInfo.put("profileImageUrl", downloadUrl);
                     mUserDatabase.updateChildren(userInfo);
-
                     finish();
                     return;
                 }
+                //  }).addOnFailureListener(new OnFailureListener() {
+                //     @Override
+                //     public void onFailure(@NonNull Exception exception) {
+                //         finish();
+                //         return;
+                //   }
+                //  });
+                //  }
             });
         }else{
             finish();
         }
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
