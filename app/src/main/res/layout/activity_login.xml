@@ -73,7 +73,7 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginBottom="35dp"
-            android:text="@string/authenticationBtn"
+            android:text="@string/Login"
             android:textSize="25sp"
             />
     </LinearLayout>

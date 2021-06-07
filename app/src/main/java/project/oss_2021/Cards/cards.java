@@ -1,5 +1,4 @@
 package project.oss_2021.Cards;
-
 public class cards {
     private String userId;
     private String name;
@@ -9,7 +8,6 @@ public class cards {
         this.name = name;
         this.profileImageUrl = profileImageUrl;
     }
-
     public String getUserId() {
         return userId;
     }
@@ -22,7 +20,6 @@ public class cards {
     public void setName(String name) {
         this.name = name;
     }
-
     public String getProfileImageUrl() {return profileImageUrl;}
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;

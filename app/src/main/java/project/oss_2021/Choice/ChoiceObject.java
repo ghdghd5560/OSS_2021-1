@@ -1,4 +1,5 @@
 package project.oss_2021.Choice;
+
 public class ChoiceObject {
     private String userId;
     private String name;

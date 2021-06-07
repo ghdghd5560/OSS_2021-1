@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -141,30 +146,56 @@ public class SettingsActivity extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
             byte[] data = baos.toByteArray();
             UploadTask uploadTask = filepath.putBytes(data);
-            uploadTask.addOnFailureListener(e -> finish());
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // StorageReference filePath = taskSnapshot.getStorage();
-                    // filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    //    @Override
-                    //    public void onSuccess(Uri uri) {
-                    String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-                    Map userInfo = new HashMap();
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if(!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return filepath.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if(task.isSuccessful()) {
+                        Uri downloadUrl = task.getResult();
+                        Map userInfo = new HashMap();
+                        userInfo.put("profileImageUrl", downloadUrl.toString());
+                        mUserDatabase.updateChildren(userInfo);
+
+                        finish();
+                        return;
+                    }
+                }
+            });
+             /*
+             uploadTask.addOnFailureListener(e -> finish());
+             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                 @Override
+                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                     // StorageReference filePath = taskSnapshot.getStorage();
+                     // filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                     //    @Override
+                     //    public void onSuccess(Uri uri) {
+                     String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+
+                     Map userInfo = new HashMap();
                     userInfo.put("profileImageUrl", downloadUrl);
                     mUserDatabase.updateChildren(userInfo);
-                    finish();
-                    return;
-                }
-                //  }).addOnFailureListener(new OnFailureListener() {
-                //     @Override
-                //     public void onFailure(@NonNull Exception exception) {
-                //         finish();
-                //         return;
-                //   }
-                //  });
-                //  }
-            });
+                     finish();
+                     return;
+                 }
+                 //  }).addOnFailureListener(new OnFailureListener() {
+                 //     @Override
+                 //     public void onFailure(@NonNull Exception exception) {
+                 //         finish();
+                 //         return;
+                 //   }
+                 //  });
+                 //  }
+             });
+             }); */
         }else{
             finish();
         }

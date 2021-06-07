@@ -1,9 +1,12 @@
 package project.oss_2021;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +17,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -32,15 +39,16 @@ import java.util.Map;
 public class RegistrationActivity extends AppCompatActivity {
 
     private EditText mNameField, mPhoneField, mUniField;
-
-    private Button mPrevious, mConfirm;
     private RadioGroup mRadioGroup;
 
+    private Button mPrevious, mConfirm;
+
     private ImageView mProfileImage;
+
     private FirebaseAuth mAuth;
     private DatabaseReference mUserDatabase;
 
-    private String userId, name, phone, profileImageUrl,university, userSex;
+    private String userId, name, phone, profileImageUrl, university, userSex;
 
     private Uri resultUri;
 
@@ -52,16 +60,21 @@ public class RegistrationActivity extends AppCompatActivity {
         mNameField = findViewById(R.id.name);
         mPhoneField = findViewById(R.id.phone);
         mUniField = findViewById(R.id.university);
-        mRadioGroup = findViewById(R.id.radioGroup);
 
         mProfileImage = findViewById(R.id.profileImage);
 
         mPrevious = findViewById(R.id.Previous);
         mConfirm = findViewById(R.id.confirm);
+
+        mRadioGroup = findViewById(R.id.radioGroup);
+
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getCurrentUser().getUid();
+
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+
         getUserInfo();
+
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,6 +97,8 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
     }
+
+
     private void getUserInfo() {
         mUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -106,9 +121,9 @@ public class RegistrationActivity extends AppCompatActivity {
                         userSex = map.get("sex").toString();
                     }
                     Glide.with(mProfileImage.getContext()).clear(mProfileImage);
-                    if(map.get("profileImageUrl")!=null){
+                    if(map.get("profileImageUrl")!=null) {
                         profileImageUrl = map.get("profileImageUrl").toString();
-                        switch(profileImageUrl){
+                        switch (profileImageUrl) {
                             case "default":
                                 Glide.with(getApplication()).load(R.mipmap.ic_launcher).into(mProfileImage);
                                 break;
@@ -123,7 +138,12 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) { }
         });
     }
+
     private void saveUserInformation() {
+        name = mNameField.getText().toString();
+        phone = mPhoneField.getText().toString();
+        university = mUniField.getText().toString();
+
         int selectId = mRadioGroup.getCheckedRadioButtonId();
 
         final RadioButton radioButton = (RadioButton) findViewById(selectId);
@@ -132,16 +152,12 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
 
-        name = mNameField.getText().toString();
-        phone = mPhoneField.getText().toString();
-        university = mUniField.getText().toString();
-
         Map userInfo = new HashMap();
         userInfo.put("name", name);
         userInfo.put("phone", phone);
+        userInfo.put("profileImageUrl", "default");
         userInfo.put("university", university);
         userInfo.put("sex", radioButton.getText().toString());
-        userInfo.put("profileImageUrl", "default");
         mUserDatabase.updateChildren(userInfo);
 
         if(resultUri != null){
@@ -156,30 +172,56 @@ public class RegistrationActivity extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
             byte[] data = baos.toByteArray();
             UploadTask uploadTask = filepath.putBytes(data);
-            uploadTask.addOnFailureListener(e -> finish());
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // StorageReference filePath = taskSnapshot.getStorage();
-                    // filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    //    @Override
-                    //    public void onSuccess(Uri uri) {
-                    String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-                    Map userInfo = new HashMap();
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if(!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return filepath.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if(task.isSuccessful()) {
+                        Uri downloadUrl = task.getResult();
+                        Map userInfo = new HashMap();
+                        userInfo.put("profileImageUrl", downloadUrl.toString());
+                        mUserDatabase.updateChildren(userInfo);
+
+                        finish();
+                        return;
+                    }
+                }
+            });
+             /*
+             uploadTask.addOnFailureListener(e -> finish());
+             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                 @Override
+                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                     // StorageReference filePath = taskSnapshot.getStorage();
+                     // filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                     //    @Override
+                     //    public void onSuccess(Uri uri) {
+                     String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+
+                     Map userInfo = new HashMap();
                     userInfo.put("profileImageUrl", downloadUrl);
                     mUserDatabase.updateChildren(userInfo);
-                    finish();
-                    return;
-                }
-                //  }).addOnFailureListener(new OnFailureListener() {
-                //     @Override
-                //     public void onFailure(@NonNull Exception exception) {
-                //         finish();
-                //         return;
-                //   }
-                //  });
-                //  }
-            });
+                     finish();
+                     return;
+                 }
+                 //  }).addOnFailureListener(new OnFailureListener() {
+                 //     @Override
+                 //     public void onFailure(@NonNull Exception exception) {
+                 //         finish();
+                 //         return;
+                 //   }
+                 //  });
+                 //  }
+             });
+             }); */
         }else{
             finish();
         }
