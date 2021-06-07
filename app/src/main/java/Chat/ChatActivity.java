@@ -1,4 +1,4 @@
-package project.oss_2021.Chat;
+package Chat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +32,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mChatLayoutManager;
 
     private EditText mSendEditText;
-    private Button mSendButton, mPrevious;
+    private Button mSendButton;
 
     private String currentUserId, matchId, chatId;
 
@@ -67,15 +67,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 sendMessage();
-            }
-        });
-
-        mPrevious = findViewById(R.id.Previous);
-        mPrevious.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                return;
             }
         });
     }

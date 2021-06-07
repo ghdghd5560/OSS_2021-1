@@ -1,10 +1,10 @@
-package project.oss_2021.Cards;
-
-public class cards {
+package Choice;
+public class ChoiceObject {
     private String userId;
     private String name;
     private String profileImageUrl;
-    public cards (String userId, String name, String profileImageUrl) {
+
+    public ChoiceObject(String userId, String name, String profileImageUrl) {
         this.userId = userId;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
@@ -16,6 +16,7 @@ public class cards {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
     public String getName() {
         return name;
     }
@@ -23,8 +24,8 @@ public class cards {
         this.name = name;
     }
 
-    public String getProfileImageUrl() {return profileImageUrl;}
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
+    public String getProfileImageUrl() {
+        return profileImageUrl;
     }
+    public void setProfileImageUrl(String profileImageUrl) { this.profileImageUrl = profileImageUrl; }
 }

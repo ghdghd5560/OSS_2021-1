@@ -1,14 +1,12 @@
-package project.oss_2021.Choice;
-
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+package Matches;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Bundle;
+import project.oss_2021.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,13 +17,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import project.oss_2021.R;
-
-public class ChoiceActivity extends AppCompatActivity {
-    private Button mPrevious;
+public class MatchesActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mChoiceAdapter;
-    private RecyclerView.LayoutManager mChoiceLayoutManager;
+    private RecyclerView.Adapter mMatchesAdapter;
+    private RecyclerView.LayoutManager mMatchesLayoutManager;
 
     private String currentUserId;
 
@@ -35,34 +30,26 @@ public class ChoiceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_matches);
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        mRecyclerView= findViewById(R.id.recyclerView);
+        mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setHasFixedSize(true);
-        mChoiceLayoutManager = new LinearLayoutManager(ChoiceActivity.this);
-        mRecyclerView.setLayoutManager(mChoiceLayoutManager);
-        mChoiceAdapter = new ChoiceAdapter(getDataSetChoice(), ChoiceActivity.this);
-        mRecyclerView.setAdapter(mChoiceAdapter);
+        mMatchesLayoutManager = new LinearLayoutManager(MatchesActivity.this);
+        mRecyclerView.setLayoutManager(mMatchesLayoutManager);
+        mMatchesAdapter = new MatchesAdapter(getDataSetMatches(), MatchesActivity.this);
+        mRecyclerView.setAdapter(mMatchesAdapter);
 
-        getUserLikeId();
+        getUserMatchId();
 
-        mPrevious = findViewById(R.id.Previous);
-        mPrevious.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                return;
-            }
-        });
     }
 
-    private void getUserLikeId() {
-        DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId).child("connection").child("choice");
+    private void getUserMatchId() {
+        DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId).child("connection").child("matches");
         matchDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
-                    for(DataSnapshot choice : snapshot.getChildren()) {
-                        FetchLikesInformation(choice.getKey());
+                    for(DataSnapshot match : snapshot.getChildren()) {
+                        FetchMatchInformation(match.getKey());
                     }
                 }
             }
@@ -74,7 +61,7 @@ public class ChoiceActivity extends AppCompatActivity {
         });
     }
 
-    private void FetchLikesInformation(String key) {
+    private void FetchMatchInformation(String key) {
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
         userDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -91,9 +78,9 @@ public class ChoiceActivity extends AppCompatActivity {
                         profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
                     }
 
-                    ChoiceObject obj = new ChoiceObject(userId, name, profileImageUrl);
-                    resultsChoice.add(obj);
-                    mChoiceAdapter.notifyDataSetChanged();
+                    MatchesObject obj = new MatchesObject(userId, name, profileImageUrl);
+                    resultsMatches.add(obj);
+                    mMatchesAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -104,6 +91,6 @@ public class ChoiceActivity extends AppCompatActivity {
         });
     }
 
-    private ArrayList<ChoiceObject> resultsChoice = new ArrayList<ChoiceObject>();
-    private List<ChoiceObject> getDataSetChoice() { return resultsChoice; }
+    private ArrayList<MatchesObject> resultsMatches = new ArrayList<MatchesObject>();
+    private List<MatchesObject> getDataSetMatches() { return resultsMatches; }
 }

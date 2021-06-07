@@ -145,6 +145,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Map userInfo = new HashMap();
         userInfo.put("name", name);
         userInfo.put("phone", phone);
+        userInfo.put("profileImageUrl", "default");
         userInfo.put("sex", radioButton.getText().toString());
         mUserDatabase.updateChildren(userInfo);
 
@@ -167,10 +168,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    // StorageReference filePath = taskSnapshot.getStorage();
-                    // filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    //    @Override
-                    //    public void onSuccess(Uri uri) {
                     String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
 
                     Map userInfo = new HashMap();
@@ -180,14 +177,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     finish();
                     return;
                 }
-                //  }).addOnFailureListener(new OnFailureListener() {
-                //     @Override
-                //     public void onFailure(@NonNull Exception exception) {
-                //         finish();
-                //         return;
-                //   }
-                //  });
-                //  }
             });
         }else{
             finish();
