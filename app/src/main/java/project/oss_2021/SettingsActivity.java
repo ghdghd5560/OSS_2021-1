@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import project.oss_2021.Choice.ChoiceActivity;
+
 public class SettingsActivity extends AppCompatActivity {
 
     private EditText mNameField, mPhoneField, mUniField;
@@ -82,6 +84,9 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveUserInformation();
+                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                startActivity(intent);
+
             }
         });
         mPrevious.setOnClickListener(new View.OnClickListener() {
@@ -171,41 +176,14 @@ public class SettingsActivity extends AppCompatActivity {
                         userInfo.put("profileImageUrl", downloadUrl.toString());
                         mUserDatabase.updateChildren(userInfo);
 
-                        finish();
+
                         return;
                     }
                 }
             });
-             /*
-             uploadTask.addOnFailureListener(e -> finish());
-             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                 @Override
-                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                     // StorageReference filePath = taskSnapshot.getStorage();
-                     // filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                     //    @Override
-                     //    public void onSuccess(Uri uri) {
-                     String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-
-                     Map userInfo = new HashMap();
-                    userInfo.put("profileImageUrl", downloadUrl);
-                    mUserDatabase.updateChildren(userInfo);
-                     finish();
-                     return;
-                 }
-                 //  }).addOnFailureListener(new OnFailureListener() {
-                 //     @Override
-                 //     public void onFailure(@NonNull Exception exception) {
-                 //         finish();
-                 //         return;
-                 //   }
-                 //  });
-                 //  }
-             });
-             }); */
         }else{
-            finish();
+
         }
     }
     @Override
